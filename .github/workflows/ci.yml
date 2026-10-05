@@ -42,3 +42,38 @@ jobs:
             exit 1
           fi
           echo "No .env secrets committed."
+
+  backend-ci:
+    name: Backend CI
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Check Formatting
+        working-directory: ./apps/api
+        run: npm run format:check
+
+      - name: Lint
+        working-directory: ./apps/api
+        run: npm run lint
+
+      - name: Typecheck
+        working-directory: ./apps/api
+        run: npm run typecheck
+
+      - name: Test
+        working-directory: ./apps/api
+        run: npm run test
+
+      - name: Build
+        working-directory: ./apps/api
+        run: npm run build

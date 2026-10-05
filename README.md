@@ -2,7 +2,9 @@
 
 FleetPulse is a real-time fleet telemetry and vehicle intelligence platform. It enables operators to monitor, manage, and analyze fleet operations seamlessly.
 
-> **Note:** FleetPulse is currently under staged development. PR 01 establishes the engineering foundation. Runtime implementation will follow in subsequent PRs.
+> **Note:** FleetPulse is currently under staged development. 
+> PR 01 — Foundation: completed
+> PR 02 — Backend Bootstrap: completed
 
 ## Key Capabilities (Planned)
 - Real-time vehicle monitoring and map visualization.
