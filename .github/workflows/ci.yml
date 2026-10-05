@@ -77,3 +77,38 @@ jobs:
       - name: Build
         working-directory: ./apps/api
         run: npm run build
+
+  frontend-ci:
+    name: Frontend CI
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Check Formatting
+        working-directory: ./apps/web
+        run: npm run format:check
+
+      - name: Lint
+        working-directory: ./apps/web
+        run: npm run lint
+
+      - name: Typecheck
+        working-directory: ./apps/web
+        run: npm run typecheck
+
+      - name: Test
+        working-directory: ./apps/web
+        run: npm run test -- --run
+
+      - name: Build
+        working-directory: ./apps/web
+        run: npm run build
