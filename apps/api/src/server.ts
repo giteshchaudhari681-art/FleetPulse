@@ -1,0 +1,23 @@
+import { buildApp } from './app';
+import { env } from './config';
+import { setupGracefulShutdown } from './utils/shutdown';
+
+async function startServer() {
+  const app = buildApp();
+
+  try {
+    setupGracefulShutdown(app);
+
+    await app.listen({
+      port: env.PORT,
+      host: env.HOST,
+    });
+
+    app.log.info(`Server started correctly on ${env.HOST}:${env.PORT}`);
+  } catch (err) {
+    app.log.error(err, 'Failed to start server');
+    process.exit(1);
+  }
+}
+
+startServer();
