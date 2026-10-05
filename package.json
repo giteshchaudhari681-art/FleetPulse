@@ -1,0 +1,13 @@
+{
+  "name": "fleetpulse",
+  "version": "1.0.0",
+  "description": "FleetPulse Foundation",
+  "private": true,
+  "scripts": {
+    "test:structure": "node scripts/verify-roadmap.js"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
+}

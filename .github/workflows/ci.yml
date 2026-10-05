@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main", "feat/*", "bug/*" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  verify-foundation:
+    name: Verify Foundation & Docs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Verify Roadmap Integrity
+        run: node scripts/verify-roadmap.js
+
+      - name: Verify Required Files Exist
+        run: |
+          test -f README.md
+          test -f .env.example
+          test -f .gitignore
+          test -f docs/product/ROADMAP.md
+          test -f docs/product/PRODUCT_VISION.md
+          test -f docs/product/FEATURES.md
+          test -f docs/product/SCOPE.md
+          test -f docs/architecture/ARCHITECTURE.md
+          test -f docs/ENGINEERING_STANDARDS.md
+          echo "All required foundation files exist."
+
+      - name: Verify No Accidental Secrets
+        run: |
+          if [ -f .env ]; then
+            echo "❌ Error: .env file found in repository. Secrets should not be committed."
+            exit 1
+          fi
+          echo "No .env secrets committed."
