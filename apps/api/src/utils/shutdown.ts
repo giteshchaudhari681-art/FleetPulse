@@ -1,12 +1,13 @@
 import { FastifyInstance } from 'fastify';
+import { disconnectDatabase } from '../database/client';
 
 export function setupGracefulShutdown(app: FastifyInstance) {
   const shutdown = async (signal: string) => {
     app.log.info(`Received ${signal}. Starting graceful shutdown...`);
 
     try {
-      // Future: Close DB connection, Redis, MQTT here
       await app.close();
+      await disconnectDatabase();
       app.log.info('Graceful shutdown completed.');
       process.exit(0);
     } catch (err) {

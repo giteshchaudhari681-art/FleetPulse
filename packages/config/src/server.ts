@@ -7,6 +7,7 @@ export const serverConfigSchema = z.object({
   LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace']).default('info'),
   API_PREFIX: z.string().default('/api/v1'),
   CORS_ORIGIN: z.string().default('http://localhost:5173'),
+  DATABASE_URL: z.string().url().default('postgresql://fleetpulse:fleetpulse_development_password@localhost:5432/fleetpulse_dev'),
 });
 
 export type ServerConfig = z.infer<typeof serverConfigSchema>;
