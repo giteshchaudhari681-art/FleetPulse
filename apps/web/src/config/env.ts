@@ -1,17 +1,7 @@
-import { z } from 'zod';
+import { loadPublicConfig } from '@fleetpulse/config';
 
-const envSchema = z.object({
-  VITE_API_BASE_URL: z.string().url().default('http://localhost:3000'),
+// We must explicitly pass the variables from Vite's import.meta.env
+// because process.env is not available in the browser.
+export const env = loadPublicConfig({
+  VITE_API_BASE_URL: import.meta.env.VITE_API_BASE_URL,
 });
-
-// Use default values for standard development
-const parsedEnv = envSchema.safeParse({
-  VITE_API_BASE_URL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000',
-});
-
-if (!parsedEnv.success) {
-  console.error('Invalid frontend environment variables:', parsedEnv.error.format());
-  throw new Error('Invalid environment variables');
-}
-
-export const env = parsedEnv.data;

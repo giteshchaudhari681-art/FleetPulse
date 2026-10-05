@@ -1,16 +1,16 @@
 import { describe, it, expect } from 'vitest';
-import { loadEnv } from '../src/config/env';
+import { loadServerConfig } from '@fleetpulse/config';
 
 describe('Environment Configuration', () => {
   it('should load default values if not provided', () => {
-    const env = loadEnv({});
+    const env = loadServerConfig({});
     expect(env.NODE_ENV).toBe('development');
     expect(env.PORT).toBe(3000);
     expect(env.API_PREFIX).toBe('/api/v1');
   });
 
   it('should correctly parse provided values', () => {
-    const env = loadEnv({
+    const env = loadServerConfig({
       NODE_ENV: 'production',
       PORT: '4000',
     });

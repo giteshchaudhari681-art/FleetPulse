@@ -78,6 +78,33 @@ jobs:
         working-directory: ./apps/api
         run: npm run build
 
+  config-ci:
+    name: Config CI
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Typecheck
+        working-directory: ./packages/config
+        run: npm run typecheck
+
+      - name: Test
+        working-directory: ./packages/config
+        run: npm run test
+
+      - name: Build
+        working-directory: ./packages/config
+        run: npm run build
+
   frontend-ci:
     name: Frontend CI
     runs-on: ubuntu-latest
