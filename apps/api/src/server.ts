@@ -1,5 +1,6 @@
 import { buildApp } from './app';
 import { env } from './config';
+import { connectDatabase } from './database/client';
 import { setupGracefulShutdown } from './utils/shutdown';
 
 async function startServer() {
@@ -7,6 +8,11 @@ async function startServer() {
 
   try {
     setupGracefulShutdown(app);
+
+    // Connect to the database before starting the HTTP server
+    app.log.info('Connecting to database...');
+    await connectDatabase();
+    app.log.info('Connected to database successfully');
 
     await app.listen({
       port: env.PORT,

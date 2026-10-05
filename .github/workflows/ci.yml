@@ -46,6 +46,25 @@ jobs:
   backend-ci:
     name: Backend CI
     runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_USER: fleetpulse
+          POSTGRES_PASSWORD: fleetpulse_development_password
+          POSTGRES_DB: fleetpulse_dev
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DATABASE_URL: postgresql://fleetpulse:fleetpulse_development_password@localhost:5432/fleetpulse_dev
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -57,6 +76,10 @@ jobs:
 
       - name: Install Dependencies
         run: npm ci
+
+      - name: Initialize Database Schema
+        working-directory: ./apps/api
+        run: npx prisma db push
 
       - name: Check Formatting
         working-directory: ./apps/api
