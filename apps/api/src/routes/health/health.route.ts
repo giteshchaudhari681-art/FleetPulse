@@ -1,6 +1,7 @@
 import { FastifyInstance } from 'fastify';
 
 import { prisma } from '../../database/client';
+import { redis } from '../../redis/client';
 
 export async function healthRoutes(fastify: FastifyInstance) {
   fastify.get('/health', async (request, reply) => {
@@ -14,15 +15,15 @@ export async function healthRoutes(fastify: FastifyInstance) {
 
   fastify.get('/ready', async (request, reply) => {
     try {
-      // Execute a lightweight query to verify the database is available
-      await prisma.$queryRaw`SELECT 1`;
+      // Verify both database and Redis are available
+      await Promise.all([prisma.$queryRaw`SELECT 1`, redis.ping()]);
       return reply.send({
         status: 'ready',
         service: 'fleetpulse-api',
         timestamp: new Date().toISOString(),
       });
     } catch (error) {
-      fastify.log.error(error, 'Database readiness check failed');
+      fastify.log.error(error, 'Infrastructure readiness check failed');
       return reply.status(503).send({
         status: 'error',
         service: 'fleetpulse-api',

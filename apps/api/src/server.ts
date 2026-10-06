@@ -1,6 +1,7 @@
 import { buildApp } from './app';
 import { env } from './config';
 import { connectDatabase } from './database/client';
+import { connectRedis } from './redis/client';
 import { setupGracefulShutdown } from './utils/shutdown';
 
 async function startServer() {
@@ -13,6 +14,10 @@ async function startServer() {
     app.log.info('Connecting to database...');
     await connectDatabase();
     app.log.info('Connected to database successfully');
+
+    app.log.info('Connecting to Redis...');
+    await connectRedis();
+    app.log.info('Connected to Redis successfully');
 
     await app.listen({
       port: env.PORT,

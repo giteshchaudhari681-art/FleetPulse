@@ -8,6 +8,7 @@ export const serverConfigSchema = z.object({
   API_PREFIX: z.string().default('/api/v1'),
   CORS_ORIGIN: z.string().default('http://localhost:5173'),
   DATABASE_URL: z.string().url().default('postgresql://fleetpulse:fleetpulse_development_password@localhost:5432/fleetpulse_dev'),
+  REDIS_URL: z.string().url().default('redis://localhost:6379'),
 });
 
 export type ServerConfig = z.infer<typeof serverConfigSchema>;
