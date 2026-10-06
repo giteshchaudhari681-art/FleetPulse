@@ -1,5 +1,6 @@
 import { FastifyInstance } from 'fastify';
 import { disconnectDatabase } from '../database/client';
+import { disconnectRedis } from '../redis/client';
 
 export function setupGracefulShutdown(app: FastifyInstance) {
   const shutdown = async (signal: string) => {
@@ -7,6 +8,7 @@ export function setupGracefulShutdown(app: FastifyInstance) {
 
     try {
       await app.close();
+      await disconnectRedis();
       await disconnectDatabase();
       app.log.info('Graceful shutdown completed.');
       process.exit(0);

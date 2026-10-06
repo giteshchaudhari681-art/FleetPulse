@@ -27,11 +27,7 @@ if (env.NODE_ENV !== 'production') {
 }
 
 export async function connectDatabase() {
-  try {
-    await prisma.$connect();
-  } catch (error) {
-    throw error;
-  }
+  await prisma.$connect();
 }
 
 export async function disconnectDatabase() {

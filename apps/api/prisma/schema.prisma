@@ -6,3 +6,10 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+// A minimal placeholder model required to allow Prisma Client generation.
+// This will be replaced by actual domain models in PR 08.
+model SystemState {
+  id        Int      @id @default(autoincrement())
+  updatedAt DateTime @updatedAt
+}
